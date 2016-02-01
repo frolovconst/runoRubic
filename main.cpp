@@ -71,10 +71,12 @@ int main()
     mainCube-> setColorSqnc("ROYGBV");
     elemArry[0]->setColorSqnc("R.YGBV");
     elemArry[1]->setColorSqnc("YGVBO.");
+    
 
     //cout << elemArry[0]->getColorSqnc() << endl << elemArry[0]->getOrientation()[0] << ' ' << elemArry[0]->getOrientation()[1] << endl;
     
     elemArry[0]->rotateOne(); elemArry[0]->rotateTwo();
+    elemArry[1]->rotateTwo(); elemArry[1]->rotateThree(); elemArry[1]->rotateOne(); elemArry[1]->rotateOne();
     
     string crntClrSqnc; 
     string mainCubeClrSqnc  { mainCube->getColorSqnc() };
@@ -83,13 +85,11 @@ int main()
     int blankFaceQuant;
 
 
-    //cout << elemArry[0]->getColorSqnc() << endl << elemArry[0]->getOrientation()[0] << ' ' << elemArry[0]->getOrientation()[1] << endl;
-    elemArry[0]->rotateTwo();
-    //cout << elemArry[0]->getColorSqnc() << endl << elemArry[0]->getOrientation()[0] << ' ' << elemArry[0]->getOrientation()[1] << endl;
-    
+
+
     char presentColours[2], frstPrsntClr;
     int j;
-    int clrPstnNumInMain;
+    int clrPstnNumInMain, clrNumInItem;
     for (i = 0; i < Nitems; i++)
     {
         crntClrSqnc = elemArry[i]->getColorSqnc();
@@ -98,10 +98,104 @@ int main()
             for (j = 0; j < 2; j++)
                 presentColours[j] = firstNonDot(crntClrSqnc.substr(2 * j + 2, 2));
             
-            frstPrsntClr = firstNonDot(crntClrSqnc.substr(0, 2));
-
-            clrPstnNumInMain = posNumInString(frstPrsntClr, mainCubeClrSqnc);
-            cout << elemArry[i]->getColorSqnc() << endl << frstPrsntClr << ' ' << clrPstnNumInMain << endl;
+            frstPrsntClr        = firstNonDot(crntClrSqnc.substr(0, 2));
+            clrPstnNumInMain    = posNumInString(frstPrsntClr, mainCubeClrSqnc);
+            clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+            
+            
+            if(clrPstnNumInMain < 4)
+            {
+                while (clrPstnNumInMain != clrNumInItem) 
+                {
+                    elemArry[i]->rotateThree();
+                    crntClrSqnc         = elemArry[i]->getColorSqnc();
+                    clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                }
+                
+                frstPrsntClr        = presentColours[0];
+                clrPstnNumInMain    = posNumInString(frstPrsntClr, mainCubeClrSqnc);
+                
+                if(clrNumInItem < 2)
+                {
+                    clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    while (clrPstnNumInMain != clrNumInItem) 
+                    {
+                        elemArry[i]->rotateTwo();
+                        crntClrSqnc         = elemArry[i]->getColorSqnc();
+                        clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    } 
+                }
+                else
+                {
+                    clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    while (clrPstnNumInMain != clrNumInItem) 
+                    {
+                        elemArry[i]->rotateOne();
+                        crntClrSqnc         = elemArry[i]->getColorSqnc();
+                        clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    } 
+                }
+            }
+            else 
+            {
+                while (clrPstnNumInMain != clrNumInItem) 
+                {
+                    elemArry[i]->rotateOne();
+                    crntClrSqnc         = elemArry[i]->getColorSqnc();
+                    clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                } 
+                
+                frstPrsntClr        = presentColours[0];
+                clrPstnNumInMain    = posNumInString(frstPrsntClr, mainCubeClrSqnc);
+                
+                if(clrNumInItem < 2)
+                {
+                    clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    while (clrPstnNumInMain != clrNumInItem) 
+                    {
+                        elemArry[i]->rotateTwo();
+                        crntClrSqnc         = elemArry[i]->getColorSqnc();
+                        clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    } 
+                }
+                else
+                {
+                    clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    while (clrPstnNumInMain != clrNumInItem) 
+                    {
+                        elemArry[i]->rotateThree();
+                        crntClrSqnc         = elemArry[i]->getColorSqnc();
+                        clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    } 
+                }
+            }
+            
+            
+           
+            
+            
+            /*if (frntSideNum == 1)
+            {
+                elemArry[i]->rotateOne(); elemArry[i]->rotateOne();
+            }
+            else if(frntSideNum < 4)    
+                while (frntSideNum)
+                {
+                    elemArry[i]->rotateThree();
+                    crntClrSqnc = elemArry[i]->getColorSqnc();
+                    frntSideNum = posNumInString(mainCubeClrSqnc[0], crntClrSqnc);
+                }
+            else
+            {
+                while (frntSideNum)
+                {
+                    elemArry[i]->rotateOne();
+                    crntClrSqnc = elemArry[i]->getColorSqnc();
+                    frntSideNum = posNumInString(mainCubeClrSqnc[0], crntClrSqnc);
+                }
+            }*/
+            
+            
 
 
 
@@ -113,7 +207,10 @@ int main()
             cout << crntClrSqnc << endl << "This piece is no corner" << endl;
         
     }
-
+    
+    cout << elemArry[0]->getColorSqnc() << endl << elemArry[1]->getColorSqnc() << endl;
+    //cout << elemArry[0]->getOrientation() << endl << elemArry[1]->getOrientation()  << endl;
+    
    /* for (i = 0; i < Nitems; i++)
     {
         crntClrSqnc = elemArry[i]->getColorSqnc();
@@ -279,7 +376,7 @@ particle::particle(void)
 
 char *particle::getOrientation(void)
 {
-    char shOrient[3] = { orientation[0], orientation[2] };
+    char shOrient[3] = { orientation[0], orientation[2], '\0'};
     
 
     return shOrient;
