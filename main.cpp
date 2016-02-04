@@ -7,17 +7,17 @@ class cube
 {
 protected:
     string colorSqnc;
-    int depth, hight, width;
+    int depth, height, width;
     
 public:
     void setColorSqnc(string);
     void setDepth(int);
-    void setHight(int);
+    void setHeight(int);
     void setWidth(int);
 
     string getColorSqnc(void);
     int getDepth(void);
-    int getHight(void);
+    int getHeight(void);
     int getWidth(void);
 
 };
@@ -30,7 +30,7 @@ class particle : public cube
 
 private:
     bool flagInPlace;
-    int x, y, z;
+    int xCoord, yCoord, zCoord;
     char frntFace, btmFace;
     string orientation;
 
@@ -58,23 +58,30 @@ bool containsThreeColouredFaces(string);
 
 char firstNonDot(string);
 
+void fillElems(particle**, int);
+
 
 
 int main()
 {
+    int Nitems{48};
     cube *mainCube;
-    particle *elemArry[2];
-    int i, Nitems{2};
+    particle *elemArry[Nitems];
+    fillElems(elemArry, Nitems);
+    int i;
+    int xAmnt=0, yAmnt=0, zAmnt=0, xStart ;
     mainCube = new cube;
-    elemArry[0] = new particle;
-    elemArry[1] = new particle;
+    //elemArry[0] = new particle;
+    //elemArry[1] = new particle;
     mainCube-> setColorSqnc("ROYGBV");
-    elemArry[0]->setColorSqnc("R.YGBV");
-    elemArry[1]->setColorSqnc("YGVBO.");
+    //elemArry[0]->setColorSqnc("R.YGBV");
+    //elemArry[1]->setColorSqnc("YGVBO.");
+    
 
     //cout << elemArry[0]->getColorSqnc() << endl << elemArry[0]->getOrientation()[0] << ' ' << elemArry[0]->getOrientation()[1] << endl;
     
     elemArry[0]->rotateOne(); elemArry[0]->rotateTwo();
+    elemArry[1]->rotateTwo(); elemArry[1]->rotateThree(); elemArry[1]->rotateOne(); elemArry[1]->rotateOne();
     
     string crntClrSqnc; 
     string mainCubeClrSqnc  { mainCube->getColorSqnc() };
@@ -83,25 +90,116 @@ int main()
     int blankFaceQuant;
 
 
-    //cout << elemArry[0]->getColorSqnc() << endl << elemArry[0]->getOrientation()[0] << ' ' << elemArry[0]->getOrientation()[1] << endl;
-    elemArry[0]->rotateTwo();
-    //cout << elemArry[0]->getColorSqnc() << endl << elemArry[0]->getOrientation()[0] << ' ' << elemArry[0]->getOrientation()[1] << endl;
-    
-    char presentColours[2], frstPrsntClr;
+
+
+    char presentColour, frstPrsntClr;
     int j;
-    int clrPstnNumInMain;
+    int clrPstnNumInMain, clrNumInItem;
     for (i = 0; i < Nitems; i++)
     {
         crntClrSqnc = elemArry[i]->getColorSqnc();
         if (containsThreeColouredFaces(crntClrSqnc))
         {
-            for (j = 0; j < 2; j++)
-                presentColours[j] = firstNonDot(crntClrSqnc.substr(2 * j + 2, 2));
+            presentColour = firstNonDot(crntClrSqnc.substr(2, 2));
             
-            frstPrsntClr = firstNonDot(crntClrSqnc.substr(0, 2));
-
-            clrPstnNumInMain = posNumInString(frstPrsntClr, mainCubeClrSqnc);
-            cout << elemArry[i]->getColorSqnc() << endl << frstPrsntClr << ' ' << clrPstnNumInMain << endl;
+            frstPrsntClr        = firstNonDot(crntClrSqnc.substr(0, 2));
+            clrPstnNumInMain    = posNumInString(frstPrsntClr, mainCubeClrSqnc);
+            clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+            
+            
+            if(clrPstnNumInMain < 4)
+            {
+                while (clrPstnNumInMain != clrNumInItem) 
+                {
+                    elemArry[i]->rotateThree();
+                    crntClrSqnc         = elemArry[i]->getColorSqnc();
+                    clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                }
+                
+                frstPrsntClr        = presentColour;
+                clrPstnNumInMain    = posNumInString(frstPrsntClr, mainCubeClrSqnc);
+                
+                if(clrNumInItem < 2)
+                {
+                    clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    while (clrPstnNumInMain != clrNumInItem) 
+                    {
+                        elemArry[i]->rotateTwo();
+                        crntClrSqnc         = elemArry[i]->getColorSqnc();
+                        clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    } 
+                }
+                else
+                {
+                    clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    while (clrPstnNumInMain != clrNumInItem) 
+                    {
+                        elemArry[i]->rotateOne();
+                        crntClrSqnc         = elemArry[i]->getColorSqnc();
+                        clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    } 
+                }
+            }
+            else 
+            {
+                while (clrPstnNumInMain != clrNumInItem) 
+                {
+                    elemArry[i]->rotateOne();
+                    crntClrSqnc         = elemArry[i]->getColorSqnc();
+                    clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                } 
+                
+                frstPrsntClr        = presentColour;
+                clrPstnNumInMain    = posNumInString(frstPrsntClr, mainCubeClrSqnc);
+                
+                if(clrNumInItem < 2)
+                {
+                    clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    while (clrPstnNumInMain != clrNumInItem) 
+                    {
+                        elemArry[i]->rotateTwo();
+                        crntClrSqnc         = elemArry[i]->getColorSqnc();
+                        clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    } 
+                }
+                else
+                {
+                    clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    while (clrPstnNumInMain != clrNumInItem) 
+                    {
+                        elemArry[i]->rotateThree();
+                        crntClrSqnc         = elemArry[i]->getColorSqnc();
+                        clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+                    } 
+                }
+            }
+            
+            
+           
+            
+            
+            /*if (frntSideNum == 1)
+            {
+                elemArry[i]->rotateOne(); elemArry[i]->rotateOne();
+            }
+            else if(frntSideNum < 4)    
+                while (frntSideNum)
+                {
+                    elemArry[i]->rotateThree();
+                    crntClrSqnc = elemArry[i]->getColorSqnc();
+                    frntSideNum = posNumInString(mainCubeClrSqnc[0], crntClrSqnc);
+                }
+            else
+            {
+                while (frntSideNum)
+                {
+                    elemArry[i]->rotateOne();
+                    crntClrSqnc = elemArry[i]->getColorSqnc();
+                    frntSideNum = posNumInString(mainCubeClrSqnc[0], crntClrSqnc);
+                }
+            }*/
+            
+            
 
 
 
@@ -111,9 +209,14 @@ int main()
         }
         else
             cout << crntClrSqnc << endl << "This piece is no corner" << endl;
+            
+        cout << elemArry[i]->getColorSqnc() << endl << elemArry[i]->getDepth() << ' ' << elemArry[i]->getHeight() << ' ' << elemArry[i]->getWidth() << endl;
         
     }
-
+    
+    
+    //cout << elemArry[0]->getOrientation() << endl << elemArry[1]->getOrientation()  << endl;
+    
    /* for (i = 0; i < Nitems; i++)
     {
         crntClrSqnc = elemArry[i]->getColorSqnc();
@@ -176,9 +279,9 @@ void cube::setDepth(int inDepth)
     depth = inDepth;
 }
 
-void cube::setHight(int inHight)
+void cube::setHeight(int inHeight)
 {
-    hight = inHight;
+    height = inHeight;
 }
 
 void cube::setWidth(int inWidth)
@@ -197,9 +300,9 @@ int cube::getDepth(void)
     return depth;
 }
 
-int cube::getHight(void)
+int cube::getHeight(void)
 {
-    return hight;
+    return height;
 }
 
 int cube::getWidth(void)
@@ -212,6 +315,7 @@ int cube::getWidth(void)
 void particle::rotateOne(void)
 {
     char bfr1, bfr2;
+    int bfr;
     bfr1 = colorSqnc[0];
     bfr2 = colorSqnc[1];
     colorSqnc[0] = colorSqnc[4];
@@ -225,6 +329,10 @@ void particle::rotateOne(void)
     orientation[1] = orientation[5];
     orientation[4] = bfr2;
     orientation[5] = bfr1;
+    
+    bfr     = width;
+    width   = depth;
+    depth   = bfr;
 
 }
 
@@ -232,6 +340,7 @@ void particle::rotateOne(void)
 void particle::rotateTwo(void)
 {
     char bfr1, bfr2;
+    int bfr;
     bfr1 = colorSqnc[2];
     bfr2 = colorSqnc[3];
     colorSqnc[2] = colorSqnc[4];
@@ -245,6 +354,10 @@ void particle::rotateTwo(void)
     orientation[3] = orientation[5];
     orientation[4] = bfr2;
     orientation[5] = bfr1;
+    
+    bfr     = width;
+    width   = height;
+    height  = bfr;
 }
 
 
@@ -252,6 +365,7 @@ void particle::rotateTwo(void)
 void particle::rotateThree(void)
 {
     char bfr1, bfr2;
+    int bfr;
     bfr1 = colorSqnc[0];
     bfr2 = colorSqnc[1];
     colorSqnc[0] = colorSqnc[2];
@@ -265,6 +379,10 @@ void particle::rotateThree(void)
     orientation[1] = orientation[3];
     orientation[2] = bfr2;
     orientation[3] = bfr1;
+    
+    bfr     = height;
+    height  = depth;
+    depth   = bfr;
 }
 
 void particle::setFlagInPlace(bool newFlag)
@@ -275,11 +393,14 @@ void particle::setFlagInPlace(bool newFlag)
 particle::particle(void)
 {
     orientation = "FBDULR";
+    depth       = 1;
+    height      = 2;
+    width       = 3;
 }
 
 char *particle::getOrientation(void)
 {
-    char shOrient[3] = { orientation[0], orientation[2] };
+    char shOrient[3] = { orientation[0], orientation[2], '\0'};
     
 
     return shOrient;
@@ -349,3 +470,303 @@ char firstNonDot(string clrSqnc)
             return clrSqnc[i];
 }
 
+
+
+void fillElems(particle **elemArry, int Nelems)
+{
+    int i;
+    for(i=1; i<Nelems; i++)
+    {
+        elemArry[i] = new particle;
+        elemArry[i]->setColorSqnc("R.YGBV");
+    }
+    
+    elemArry[0] = new particle;
+    elemArry[0]->setColorSqnc(".OY.B.");
+    elemArry[0]->setDepth(340);
+    elemArry[0]->setWidth(1);
+    elemArry[0]->setHeight(150);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[2] = new particle;
+    elemArry[2]->setColorSqnc(".OY…");
+    elemArry[2]->setDepth(340);
+    elemArry[2]->setWidth(1);
+    elemArry[2]->setHeight(100);
+    
+    elemArry[3] = new particle;
+    elemArry[3]->setColorSqnc(".OY…");
+    elemArry[3]->setDepth(340);
+    elemArry[3]->setWidth(1);
+    elemArry[3]->setHeight(140);
+    
+
+    elemArry[4] = new particle;
+    elemArry[4]->setColorSqnc(".OY…");
+    elemArry[4]->setDepth(340);
+    elemArry[4]->setWidth(1);
+    elemArry[4]->setHeight(140);    
+    
+    elemArry[5] = new particle;
+    elemArry[5]->setColorSqnc(".OY…");
+    elemArry[5]->setDepth(340);
+    elemArry[5]->setWidth(1);
+    elemArry[5]->setHeight(140);
+    
+    elemArry[6] = new particle;
+    elemArry[6]->setColorSqnc(".OY…");
+    elemArry[6]->setDepth(340);
+    elemArry[6]->setWidth(1);
+    elemArry[6]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+    
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc(".OY…");
+    elemArry[1]->setDepth(340);
+    elemArry[1]->setWidth(1);
+    elemArry[1]->setHeight(140);
+}
