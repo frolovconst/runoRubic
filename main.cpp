@@ -56,6 +56,8 @@ int countSmblInString(char, string);
 
 bool containsThreeColouredFaces(string);
 
+bool containsTwoColouredFaces(string);
+
 char firstNonDot(string);
 
 void fillElems(particle**, int);
@@ -207,8 +209,13 @@ int main()
 
         cout << elemArry[i]->getColorSqnc() << endl << elemArry[i]->getDepth() << ' ' << elemArry[i]->getHeight() << ' ' << elemArry[i]->getWidth() << endl;    
         }
+        else if(containsTwoColouredFaces(crntClrSqnc))
+        {
+            cout << crntClrSqnc << endl << "Two coloured)))))))))))))))))))" << endl;
+        }
+        
         else
-            cout << crntClrSqnc << endl << "This piece is no corner" << endl;
+            cout << crntClrSqnc << endl << "This piece is little coloured" << endl;
             
         
         
@@ -462,6 +469,40 @@ bool containsThreeColouredFaces(string clrSqnc)
     
 }
 
+bool containsTwoColouredFaces(string clrSqnc)
+{
+    int blankFaceQuant;
+    blankFaceQuant = countSmblInString('.', clrSqnc.substr(0, 2));
+    if (blankFaceQuant < 2)
+    {
+        blankFaceQuant = countSmblInString('.', clrSqnc.substr(2, 2));
+        if (blankFaceQuant < 2)
+            return true;
+        else
+        {
+            blankFaceQuant = countSmblInString('.', clrSqnc.substr(4, 2));
+            if(blankFaceQuant<2)
+                return true;
+            else
+                return false;
+        }
+    }
+    else
+    {
+        blankFaceQuant = countSmblInString('.', clrSqnc.substr(2, 2));
+        if(blankFaceQuant < 2)
+        {
+            blankFaceQuant = countSmblInString('.', clrSqnc.substr(4, 2));
+            if(blankFaceQuant < 2)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+}
+
 char firstNonDot(string clrSqnc)
 {
     int i;
@@ -657,7 +698,7 @@ void fillElems(particle **elemArry, int Nelems)
     elemArry[28]->setWidth(150);
     
     elemArry[29] = new particle;
-    elemArry[29]->setColorSqnc(...G..");
+    elemArry[29]->setColorSqnc("...G..");
     elemArry[29]->setDepth(330);
     elemArry[29]->setHeight(20);
     elemArry[29]->setWidth(140);
