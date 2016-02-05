@@ -46,7 +46,7 @@ public:
     void setYCoord(int);
     void setZCoord(int);
     particle(void);
-    char *getOrientation(void);
+    string getOrientation(void);
 
 
 
@@ -66,6 +66,8 @@ bool containsTwoColouredFaces(string);
 
 char firstNonDot(string);
 
+char lastNonDot(string);
+
 void fillElems(particle**, int);
 
 void shuffleElems(particle**, int);
@@ -74,8 +76,9 @@ void shuffleElems(particle**, int);
 
 int main()
 {
-    int Nitems{ 48 };
+    
     cube *mainCube;
+    int Nitems{ 48 };
     particle **elemArry;// [Nitems];
     elemArry = new particle*[Nitems];
     fillElems(elemArry, Nitems);
@@ -88,6 +91,25 @@ int main()
     mainCube->setDepth(1000);
     mainCube->setHeight(200);
     mainCube->setWidth(500);
+    
+    
+    /*mainCube->setColorSqnc("ROYGBV");
+    mainCube->setDepth(2);
+    mainCube->setHeight(2);
+    mainCube->setWidth(2);
+    
+    elemArry[0] = new particle;
+    elemArry[0]->setColorSqnc("R.YGBV");
+    elemArry[0]->setDepth(1);
+    elemArry[0]->setHeight(2);
+    elemArry[0]->setWidth(2);
+
+    elemArry[1] = new particle;
+    elemArry[1]->setColorSqnc("YGVBO.");
+    elemArry[1]->setDepth(2);
+    elemArry[1]->setHeight(2);
+    elemArry[1]->setWidth(1);*/
+    
 
 
     string crntClrSqnc;
@@ -105,6 +127,7 @@ int main()
     for (i = 0; i < Nitems; i++)
     {
         crntClrSqnc = elemArry[i]->getColorSqnc();
+        cout << i << ". " << crntClrSqnc << endl;
         if (containsThreeColouredFaces(crntClrSqnc))
         {
             presentColour       = firstNonDot(crntClrSqnc.substr(2, 2));
@@ -185,38 +208,133 @@ int main()
             crntClrSqnc         = elemArry[i]->getColorSqnc();
             presentColour       = firstNonDot(crntClrSqnc.substr(0, 2));
             clrNumInItem        = posNumInString(presentColour, crntClrSqnc);
-            xCoord              = clrNumInItem % 2 * mainCube->getDepth() - clrNumInItem % 2 * elemArry[i]->getDepth();
+            xCoord              = clrNumInItem % 2 * (mainCube->getDepth() - elemArry[i]->getDepth());
+            elemArry[i]->setXCoord(xCoord);
             presentColour       = firstNonDot(crntClrSqnc.substr(2, 2));
             clrNumInItem        = posNumInString(presentColour, crntClrSqnc);
-            yCoord              = clrNumInItem % 2 * mainCube->getHeight() - clrNumInItem % 2 * elemArry[i]->getHeight();
+            yCoord              = clrNumInItem % 2 * (mainCube->getHeight() - elemArry[i]->getHeight());
+            elemArry[i]->setYCoord(yCoord);
             presentColour       = firstNonDot(crntClrSqnc.substr(4, 2));
             clrNumInItem        = posNumInString(presentColour, crntClrSqnc);
-            zCoord              = clrNumInItem % 2 * mainCube->getWidth() - clrNumInItem % 2 * elemArry[i]->getWidth();
+            zCoord              = clrNumInItem % 2 * (mainCube->getWidth() - elemArry[i]->getWidth());
+            elemArry[i]->setZCoord(zCoord);
+            elemArry[i]->setFlagInPlace(true);
+            if(xCoord == 0 && yCoord==0&&zCoord==0)
+            {
+                xStart = elemArry[i]->getDepth();
+                yStart = elemArry[i]->getHeight();
+                zStart = elemArry[i]->getWidth();
+            }
             
-            
-
-
-
-
-
-         
-
-
-
-
-
-
-
-            cout << elemArry[i]->getColorSqnc() << endl << elemArry[i]->getDepth() << ' ' << elemArry[i]->getHeight() << ' ' << elemArry[i]->getWidth() << " " << xCoord << " " << yCoord << " " << zCoord << endl;
+            cout << elemArry[i]->getColorSqnc() << endl << elemArry[i]->getDepth() << ' ' << elemArry[i]->getHeight() << ' ' << elemArry[i]->getWidth() << " " << elemArry[i]->getOrientation()[0] << " " << elemArry[i]->getOrientation()[2] << " " << xCoord << " " << yCoord << " " << zCoord << endl;
         }
+        
         else if (containsTwoColouredFaces(crntClrSqnc))
-            cout << crntClrSqnc << endl << "Two colors))))))))))))))" << endl;
+        {
+            presentColour       = lastNonDot(crntClrSqnc);
+
+            frstPrsntClr        = firstNonDot(crntClrSqnc);
+            clrPstnNumInMain    = posNumInString(frstPrsntClr, mainCubeClrSqnc);
+            clrNumInItem        = posNumInString(frstPrsntClr, crntClrSqnc);
+
+
+            if (clrPstnNumInMain < 4)
+            {
+                while (clrPstnNumInMain != clrNumInItem)
+                {
+                    elemArry[i]->rotateThree();
+                    crntClrSqnc = elemArry[i]->getColorSqnc();
+                    clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
+                }
+
+                frstPrsntClr = presentColour;
+                clrPstnNumInMain = posNumInString(frstPrsntClr, mainCubeClrSqnc);
+
+                if (clrNumInItem < 2)
+                {
+                    clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
+                    while (clrPstnNumInMain != clrNumInItem)
+                    {
+                        elemArry[i]->rotateTwo();
+                        crntClrSqnc = elemArry[i]->getColorSqnc();
+                        clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
+                    }
+                }
+                else
+                {
+                    clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
+                    while (clrPstnNumInMain != clrNumInItem)
+                    {
+                        elemArry[i]->rotateOne();
+                        crntClrSqnc = elemArry[i]->getColorSqnc();
+                        clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
+                    }
+                }
+            }
+            else
+            {
+                while (clrPstnNumInMain != clrNumInItem)
+                {
+                    elemArry[i]->rotateOne();
+                    crntClrSqnc = elemArry[i]->getColorSqnc();
+                    clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
+                }
+
+                frstPrsntClr = presentColour;
+                clrPstnNumInMain = posNumInString(frstPrsntClr, mainCubeClrSqnc);
+
+                if (clrNumInItem < 2)
+                {
+                    clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
+                    while (clrPstnNumInMain != clrNumInItem)
+                    {
+                        elemArry[i]->rotateTwo();
+                        crntClrSqnc = elemArry[i]->getColorSqnc();
+                        clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
+                    }
+                }
+                else
+                {
+                    clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
+                    while (clrPstnNumInMain != clrNumInItem)
+                    {
+                        elemArry[i]->rotateThree();
+                        crntClrSqnc = elemArry[i]->getColorSqnc();
+                        clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
+                    }
+                }
+            }
+            
+            /*crntClrSqnc = elemArry[i]->getColorSqnc();
+            if(crntClrSqnc[2] != '.')
+                if(crntClrSqnc[4] != '.')
+                    xAmnt++;
+                    
+            if(crntClrSqnc[4] != '.')
+                if(crntClrSqnc[0] != '.')
+                    yAmnt++;
+                
+            if(crntClrSqnc[0] != '.')
+                if(crntClrSqnc[2] != '.')
+                    zAmnt++;*/
+            
+                
+                
+                
+            
+            
+            //cout << elemArry[i]->getColorSqnc() << endl << elemArry[i]->getDepth() << ' ' << elemArry[i]->getHeight() << ' ' << elemArry[i]->getWidth() << " " << elemArry[i]->getOrientation()[0] << " " << elemArry[i]->getOrientation()[2] << " " << xCoord << " " << yCoord << " " << zCoord << endl;
+            
+        }
+            
         else
-                    cout << crntClrSqnc << endl << "This piece is no corner" << endl;
+            cout << crntClrSqnc << endl << "This piece is no corner" << endl;
 
 
 
     }
+    
+    cout << xAmnt << yAmnt << zAmnt;
 
 
    
@@ -358,12 +476,9 @@ particle::particle(void)
     width = 3;
 }
 
-char *particle::getOrientation(void)
+string particle::getOrientation(void)
 {
-    char shOrient[3] = { orientation[0], orientation[2], '\0' };
-
-
-    return shOrient;
+    return orientation;
 }
 
 bool inString(char item, string Source)
@@ -469,6 +584,16 @@ char firstNonDot(string clrSqnc)
     for (i = 0; i < clrSqnc.length(); i++)
         if (clrSqnc[i] != '.')
             return clrSqnc[i];
+    return '0';
+}
+
+char lastNonDot(string clrSqnc)
+{
+    int i;
+    for (i = clrSqnc.length()-1; i > 0; i--)
+        if (clrSqnc[i] != '.')
+            return clrSqnc[i];
+    return '0';
 }
 
 void particle::setXCoord(int coord)
@@ -490,12 +615,12 @@ void particle::setZCoord(int coord)
 
 void fillElems(particle **elemArry, int Nelems)
 {
-    int i;
+    /*int i;
     for (i = 1; i<Nelems; i++)
     {
         elemArry[i] = new particle;
         elemArry[i]->setColorSqnc("R.YGBV");
-    }
+    }*/
 
     elemArry[0] = new particle;
     elemArry[0]->setColorSqnc(".OY.B.");
