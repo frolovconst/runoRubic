@@ -85,7 +85,7 @@ int main()
     int i, j, k, n;
     cube *mainCube;
     string inpStr, number;
-    int Nitems{ 48 };
+    int Nitems;//{ 48 };
     particle **elemArry;// , **elemArry_j;
     getline(cin, inpStr);
     getline(cin, number);// >> Nitems;
