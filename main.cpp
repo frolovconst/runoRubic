@@ -1,7 +1,6 @@
 // RunoRubic.cpp : Defines the entry point for the console application.
 //
 
-#include <cstdlib>
 #include <iostream>
 #include <string>
 using namespace std;
@@ -17,6 +16,7 @@ public:
     void setDepth(int);
     void setHeight(int);
     void setWidth(int);
+    void initCube(string);
 
     string getColorSqnc(void);
     int getDepth(void);
@@ -79,38 +79,40 @@ void fillElems(particle**, int);
 void shuffleElems(particle**, int);
 
 
-
 int main()
 {
 
     int i, j, k, n;
     cube *mainCube;
-    string mainCubeStr, number;
-    int Nitems;// { 48 };
-    string *items;
+    string inpStr, number;
+    int Nitems{ 48 };
     particle **elemArry;// , **elemArry_j;
-    getline(cin, mainCubeStr);
-    getline(cin, number);// >> Nitems;
-    Nitems = stoi(number);
-    items = new string[Nitems];
-    //cout << Nitems;
+    //getline(cin, inpStr);
+    //getline(cin, number);// >> Nitems;
+    //Nitems = stoi(number);
+    mainCube = new cube;
+    //mainCube->initCube(inpStr);
+    elemArry = new particle*[Nitems];
     
-    for (i = 0; i < Nitems; i++)
-    {       getline(cin,items[i]);
-    cout << i << endl;
-}
-    //items[0] = "hhh"; items[1] = "ggg"; items[2] = "lll";
 
-    for (i = 0; i < Nitems; i++)
-        cout << i << " " << items[i];
+    /*for (i = 0; i < Nitems; i++)
+    {       
+        getline(cin,inpStr);
+        elemArry[i] = new particle;
+        elemArry[i]->initCube(inpStr);
+    }*/
 
-    cout << endl << mainCubeStr;
+    
 
-    //elemArry = new particle*[Nitems];
+
+
+
+    
+
     //elemArry_j = new particle*[Nitems];
 
-    //fillElems(elemArry, Nitems);
-    //shuffleElems(elemArry, Nitems);
+    fillElems(elemArry, Nitems);
+    shuffleElems(elemArry, Nitems);
     int xAmnt = 0, yAmnt = 0, zAmnt = 0, xStart{ 0 }, xEnd, yStart{ 0 }, yEnd, zStart{ 0 }, zEnd, xCoord, yCoord, zCoord;
     int xDmnsns[998], yDmnsns[998], zDmnsns[998];
     int xAmntAdd, yAmntAdd, zAmntAdd;
@@ -130,7 +132,6 @@ int main()
         
     }*/
 
-    mainCube = new cube;
 
     mainCube->setColorSqnc("ROYGBV");
     mainCube->setDepth(1000);
@@ -168,7 +169,7 @@ int main()
 
     char presentColour, frstPrsntClr;
     int clrPstnNumInMain, clrNumInItem;
-    /*for (i = 0; i < Nitems; i++)
+    for (i = 0; i < Nitems; i++)
     {
         crntClrSqnc = elemArry[i]->getColorSqnc();
         //cout << i << ". " << crntClrSqnc << endl;
@@ -815,11 +816,10 @@ int main()
 
     for (i = 0; i < Nitems; i++)
         cout << i << ". " << elemArry[i]->getOrientation()[0] << " " << elemArry[i]->getOrientation()[2] << " " << elemArry[i]->getXCoord() << " " << elemArry[i]->getYCoord() << " " << elemArry[i]->getZCoord() << endl;
-*/
-cout << "press";
-    cin.clear();
+
+    /*cin.clear();
     cin.ignore(32767, '\n');
-    cin.get();
+    cin.get();*/
     return 0;
 }
 
@@ -828,6 +828,26 @@ void cube::setColorSqnc(string inClrSqnc)
 {
     colorSqnc = inClrSqnc;
 }
+
+void cube::initCube(string intStr)
+{
+    int i;
+    int spaces[3], indx=0;
+    for(i=0;i<intStr.length();i++)
+    {
+        if (intStr[i]==' ')
+        {
+            spaces[indx]=i;
+            indx++;
+        }
+    }
+    depth       = stoi(intStr.substr(0,spaces[0]));
+    height      = stoi(intStr.substr(spaces[0]+1,spaces[1]-spaces[0]-1));
+    width       = stoi(intStr.substr(spaces[1]+1,spaces[2]-spaces[1]-1));
+    colorSqnc   = intStr.substr(spaces[2]+1,6);
+    
+}
+
 
 void cube::setDepth(int inDepth)
 {
@@ -1123,16 +1143,8 @@ bool particle::getFlgInPlace(void)
     return flagInPlace;
 }
 
-
 void fillElems(particle **elemArry, int Nelems)
 {
-    /*int i;
-    for (i = 1; i<Nelems; i++)
-    {
-    elemArry[i] = new particle;
-    elemArry[i]->setColorSqnc("R.YGBV");
-    }*/
-
     elemArry[0] = new particle;
     elemArry[0]->setColorSqnc(".OY.B.");
     elemArry[0]->setDepth(340);
