@@ -1,3 +1,4 @@
+
 // RunoRubic.cpp : Defines the entry point for the console application.
 //
 
@@ -85,7 +86,7 @@ int main()
     int i, j, k, n;
     cube *mainCube;
     string inpStr, number;
-    int Nitems{ 48 };
+    int Nitems{ 2 };
     particle **elemArry, **elemArry_j;
     //getline(cin, inpStr);
     //getline(cin, number);// >> Nitems;
@@ -112,15 +113,15 @@ int main()
 
     elemArry_j = new particle*[Nitems];
 
-    fillElems(elemArry, Nitems);
-    shuffleElems(elemArry, Nitems);
+    //fillElems(elemArry, Nitems);
+    //shuffleElems(elemArry, Nitems);
     int xAmnt = 0, yAmnt = 0, zAmnt = 0, xStart{ 0 }, xEnd, yStart{ 0 }, yEnd, zStart{ 0 }, zEnd, xCoord, yCoord, zCoord;
     int xDmnsns[998], yDmnsns[998], zDmnsns[998];
     int xAmntAdd, yAmntAdd, zAmntAdd;
     int crntX{ 0 }, crntY{ 0 }, crntZ { 0 };
 
-    n = 47;
-    for (i = 0; i < Nitems; i++)
+    n = Nitems-1;
+    /*for (i = 0; i < Nitems; i++)
     {
         elemArry_j[i] = elemArry[n];
         n--;
@@ -130,41 +131,37 @@ int main()
     {
         elemArry[i] = elemArry_j[i];
         
-    }
-
-
-    mainCube->setColorSqnc("ROYGBV");
-    mainCube->setDepth(1000);
-    mainCube->setHeight(200);
-    mainCube->setWidth(500);
+    }*/
 
 
     /*mainCube->setColorSqnc("ROYGBV");
+    mainCube->setDepth(1100);
+    mainCube->setHeight(200);
+    mainCube->setWidth(500);*/
+
+
+    mainCube->setColorSqnc("ROYGBV");
     mainCube->setDepth(2);
     mainCube->setHeight(2);
     mainCube->setWidth(2);
 
-    elemArry[0] = new particle;
-    elemArry[0]->setColorSqnc("R.YGBV");
-    elemArry[0]->setDepth(1);
-    elemArry[0]->setHeight(2);
-    elemArry[0]->setWidth(2);
-
     elemArry[1] = new particle;
-    elemArry[1]->setColorSqnc("YGVBO.");
-    elemArry[1]->setDepth(2);
+    elemArry[1]->setColorSqnc("R.YGBV");
+    elemArry[1]->setDepth(1);
     elemArry[1]->setHeight(2);
-    elemArry[1]->setWidth(1);*/
+    elemArry[1]->setWidth(2);
+
+    elemArry[0] = new particle;
+    elemArry[0]->setColorSqnc("YGVBO.");
+    elemArry[0]->setDepth(2);
+    elemArry[0]->setHeight(2);
+    elemArry[0]->setWidth(1);
 
 
 
     string crntClrSqnc;
     string mainCubeClrSqnc{ mainCube->getColorSqnc() };
-    bool flagFrntOk, flagBtmOk, flagLftOk;
     int frntSideNum, btmSideNum, lftSideNum;
-    int blankFaceQuant;
-
-
 
 
     char presentColour, frstPrsntClr;
@@ -362,20 +359,20 @@ int main()
                 if (crntClrSqnc[4] != '.')
                 {
                     xDmnsns[xAmnt] = elemArry[i]->getDepth();                 
-                    elemArry[i]->setXCoord(crntX);
-                    elemArry[i]->setYCoord(0);
-                    elemArry[i]->setZCoord(0);
-                    crntX += xDmnsns[xAmnt];
+                    //elemArry[i]->setXCoord(crntX);
+                    //elemArry[i]->setYCoord(0);
+                    //elemArry[i]->setZCoord(0);
+                    //crntX += xDmnsns[xAmnt];
                     xAmnt++;
                 }
             if (crntClrSqnc[4] != '.')
                 if (crntClrSqnc[0] != '.')
                 {
                     yDmnsns[yAmnt] = elemArry[i]->getHeight();
-                    elemArry[i]->setXCoord(0); 
-                    elemArry[i]->setYCoord(crntY);
-                    elemArry[i]->setZCoord(0);
-                    crntY += yDmnsns[yAmnt];
+                    //elemArry[i]->setXCoord(0); 
+                    //elemArry[i]->setYCoord(crntY);
+                    //elemArry[i]->setZCoord(0);
+                    //crntY += yDmnsns[yAmnt];
                     yAmnt++;
                 }
 
@@ -383,10 +380,10 @@ int main()
                 if (crntClrSqnc[2] != '.')
                 {
                     zDmnsns[zAmnt] = elemArry[i]->getWidth();
-                    elemArry[i]->setXCoord(0);
-                    elemArry[i]->setYCoord(0);
-                    elemArry[i]->setZCoord(crntZ);
-                    crntZ += zDmnsns[zAmnt];
+                    //elemArry[i]->setXCoord(0);
+                    //elemArry[i]->setYCoord(0);
+                    //elemArry[i]->setZCoord(crntZ);
+                    //crntZ += zDmnsns[zAmnt];
                     zAmnt++;                    
                 }
 
@@ -1436,6 +1433,103 @@ void fillElems(particle **elemArry, int Nelems)
     elemArry[47]->setDepth(330);
     elemArry[47]->setHeight(20);
     elemArry[47]->setWidth(110);
+    
+    elemArry[48] = new particle;
+    elemArry[48]->setColorSqnc("..Y.B.");
+    elemArry[48]->setDepth(100);
+    elemArry[48]->setHeight(1);
+    elemArry[48]->setWidth(150);
+
+    elemArry[49] = new particle;
+    elemArry[49]->setColorSqnc("..Y...");
+    elemArry[49]->setDepth(100);
+    elemArry[49]->setHeight(1);
+    elemArry[49]->setWidth(140);
+
+    elemArry[50] = new particle;
+    elemArry[50]->setColorSqnc("..Y...");
+    elemArry[50]->setDepth(100);
+    elemArry[50]->setHeight(1);
+    elemArry[50]->setWidth(100);
+
+    elemArry[51] = new particle;
+    elemArry[51]->setColorSqnc("..Y..V");
+    elemArry[51]->setDepth(100);
+    elemArry[51]->setHeight(1);
+    elemArry[51]->setWidth(110);
+
+    elemArry[52] = new particle;
+    elemArry[52]->setColorSqnc("....B.");
+    elemArry[52]->setDepth(100);
+    elemArry[52]->setHeight(79);
+    elemArry[52]->setWidth(150);
+
+    elemArry[53] = new particle;
+    elemArry[53]->setColorSqnc("......");
+    elemArry[53]->setDepth(100);
+    elemArry[53]->setHeight(79);
+    elemArry[53]->setWidth(140);
+
+    elemArry[54] = new particle;
+    elemArry[54]->setColorSqnc("......");
+    elemArry[54]->setDepth(100);
+    elemArry[54]->setHeight(79);
+    elemArry[54]->setWidth(100);
+
+    elemArry[55] = new particle;
+    elemArry[55]->setColorSqnc(".....V");
+    elemArry[55]->setDepth(100);
+    elemArry[55]->setHeight(79);
+    elemArry[55]->setWidth(110);
+
+    elemArry[56] = new particle;
+    elemArry[56]->setColorSqnc("....B.");
+    elemArry[56]->setDepth(100);
+    elemArry[56]->setHeight(100);
+    elemArry[56]->setWidth(150);
+
+    elemArry[57] = new particle;
+    elemArry[57]->setColorSqnc("......");
+    elemArry[57]->setDepth(100);
+    elemArry[57]->setHeight(100);
+    elemArry[57]->setWidth(140);
+
+    elemArry[58] = new particle;
+    elemArry[58]->setColorSqnc("......");
+    elemArry[58]->setDepth(100);
+    elemArry[58]->setHeight(100);
+    elemArry[58]->setWidth(100);
+
+    elemArry[59] = new particle;
+    elemArry[59]->setColorSqnc(".....V");
+    elemArry[59]->setDepth(100);
+    elemArry[59]->setHeight(100);
+    elemArry[59]->setWidth(110);
+
+    elemArry[60] = new particle;
+    elemArry[60]->setColorSqnc("...GB.");
+    elemArry[60]->setDepth(100);
+    elemArry[60]->setHeight(20);
+    elemArry[60]->setWidth(150);
+
+    elemArry[61] = new particle;
+    elemArry[61]->setColorSqnc("...G..");
+    elemArry[61]->setDepth(100);
+    elemArry[61]->setHeight(20);
+    elemArry[61]->setWidth(140);
+
+    elemArry[62] = new particle;
+    elemArry[62]->setColorSqnc("...G..");
+    elemArry[62]->setDepth(100);
+    elemArry[62]->setHeight(20);
+    elemArry[62]->setWidth(100);
+
+    elemArry[63] = new particle;
+    elemArry[63]->setColorSqnc("...G.V");
+    elemArry[63]->setDepth(100);
+    elemArry[63]->setHeight(20);
+    elemArry[63]->setWidth(110);
+
 
 
 }
