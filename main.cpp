@@ -86,7 +86,7 @@ int main()
     int i, j, k, n;
     cube *mainCube;
     string inpStr, number;
-    int Nitems{ 2 };
+    int Nitems{ 64 };
     particle **elemArry, **elemArry_j;
     //getline(cin, inpStr);
     //getline(cin, number);// >> Nitems;
@@ -101,8 +101,8 @@ int main()
         getline(cin,inpStr);
         elemArry[i] = new particle;
         elemArry[i]->initCube(inpStr);
-    }
-    */
+    }*/
+    
 
     
 
@@ -113,15 +113,13 @@ int main()
 
     elemArry_j = new particle*[Nitems];
 
-    //fillElems(elemArry, Nitems);
-    //shuffleElems(elemArry, Nitems);
     int xAmnt = 0, yAmnt = 0, zAmnt = 0, xStart{ 0 }, xEnd, yStart{ 0 }, yEnd, zStart{ 0 }, zEnd, xCoord, yCoord, zCoord;
     int xDmnsns[998], yDmnsns[998], zDmnsns[998];
     int xAmntAdd, yAmntAdd, zAmntAdd;
     int crntX{ 0 }, crntY{ 0 }, crntZ { 0 };
 
-    n = Nitems-1;
-    /*for (i = 0; i < Nitems; i++)
+    /*n = Nitems-1;
+    for (i = 0; i < Nitems; i++)
     {
         elemArry_j[i] = elemArry[n];
         n--;
@@ -132,15 +130,19 @@ int main()
         elemArry[i] = elemArry_j[i];
         
     }*/
+    
+    fillElems(elemArry, Nitems);
+    //shuffleElems(elemArry, Nitems);
 
-
-    /*mainCube->setColorSqnc("ROYGBV");
-    mainCube->setDepth(1100);
-    mainCube->setHeight(200);
-    mainCube->setWidth(500);*/
 
 
     mainCube->setColorSqnc("ROYGBV");
+    mainCube->setDepth(1100);
+    mainCube->setHeight(200);
+    mainCube->setWidth(500);
+
+
+    /*mainCube->setColorSqnc("ROYGBV");
     mainCube->setDepth(2);
     mainCube->setHeight(2);
     mainCube->setWidth(2);
@@ -155,7 +157,7 @@ int main()
     elemArry[0]->setColorSqnc("YGVBO.");
     elemArry[0]->setDepth(2);
     elemArry[0]->setHeight(2);
-    elemArry[0]->setWidth(1);
+    elemArry[0]->setWidth(1);*/
 
 
 
@@ -814,9 +816,10 @@ int main()
 
 
 
-    for (i = 0; i < Nitems; i++)
+    //for (i = Nitems-1; i >= 0; i--)
+    for(i=0; i< Nitems; i++)
         cout << i << ". " << elemArry[i]->getOrientation()[0] << " " << elemArry[i]->getOrientation()[2] << " " << elemArry[i]->getXCoord() << " " << elemArry[i]->getYCoord() << " " << elemArry[i]->getZCoord() << " " <<  elemArry[i]->getDepth() << " " << elemArry[i]->getHeight() << " " << elemArry[i]->getWidth() << " " << elemArry[i]->getColorSqnc() << endl;
-
+//i << ". " <<
     /*cin.clear();
     cin.ignore(32767, '\n');
     cin.get();*/
