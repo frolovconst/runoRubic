@@ -1,4 +1,3 @@
-
 // RunoRubic.cpp : Defines the entry point for the console application.
 //
 
@@ -35,7 +34,6 @@ class particle : public cube
 private:
     bool flagInPlace;
     int xCoord, yCoord, zCoord;
-    char frntFace, btmFace;
     string orientation;
 
 public:
@@ -79,6 +77,10 @@ void fillElems(particle**, int);
 
 void shuffleElems(particle**, int);
 
+void shufflePosElems(particle**, int);
+
+//int *ribsPlacing(particle** elemArry, int Nitems, int *ribDmnsns, int rinAmnt, int nonRib1End, int nonRib1Amnt, int nonRib2End, int nonRib2Amnt);
+
 
 int main()
 {
@@ -94,48 +96,47 @@ int main()
     mainCube = new cube;
     //mainCube->initCube(inpStr);
     elemArry = new particle*[Nitems];
-    
+
 
     /*for (i = 0; i < Nitems; i++)
-    {       
-        getline(cin,inpStr);
-        elemArry[i] = new particle;
-        elemArry[i]->initCube(inpStr);
+    {
+    getline(cin,inpStr);
+    elemArry[i] = new particle;
+    elemArry[i]->initCube(inpStr);
     }*/
-    
-
-    
 
 
 
 
-    
+
+
+
+
 
     elemArry_j = new particle*[Nitems];
 
     int xAmnt = 0, yAmnt = 0, zAmnt = 0, xStart{ 0 }, xEnd, yStart{ 0 }, yEnd, zStart{ 0 }, zEnd, xCoord, yCoord, zCoord;
     int xDmnsns[998], yDmnsns[998], zDmnsns[998];
     int xAmntAdd, yAmntAdd, zAmntAdd;
-    int crntX{ 0 }, crntY{ 0 }, crntZ { 0 };
+    int crntX{ 0 }, crntY{ 0 }, crntZ{ 0 };
 
     /*n = Nitems-1;
     for (i = 0; i < Nitems; i++)
     {
-        elemArry_j[i] = elemArry[n];
-        n--;
+    elemArry_j[i] = elemArry[n];
+    n--;
     }
 
     for (i = 0; i < Nitems; i++)
     {
-        elemArry[i] = elemArry_j[i];
-        
+    elemArry[i] = elemArry_j[i];
+
     }*/
-    
+
     fillElems(elemArry, Nitems);
-    //shuffleElems(elemArry, Nitems);
-
-
-
+    shuffleElems(elemArry, Nitems);
+    shufflePosElems(elemArry, Nitems);
+    
     mainCube->setColorSqnc("ROYGBV");
     mainCube->setDepth(1100);
     mainCube->setHeight(200);
@@ -249,18 +250,18 @@ int main()
             }
 
 
-            crntClrSqnc     = elemArry[i]->getColorSqnc();
-            presentColour   = firstNonDot(crntClrSqnc.substr(0, 2));
-            clrNumInItem    = posNumInString(presentColour, crntClrSqnc);
-            xCoord          = clrNumInItem % 2 * (mainCube->getDepth() - elemArry[i]->getDepth());
+            crntClrSqnc = elemArry[i]->getColorSqnc();
+            presentColour = firstNonDot(crntClrSqnc.substr(0, 2));
+            clrNumInItem = posNumInString(presentColour, crntClrSqnc);
+            xCoord = clrNumInItem % 2 * (mainCube->getDepth() - elemArry[i]->getDepth());
             elemArry[i]->setXCoord(xCoord);
-            presentColour   = firstNonDot(crntClrSqnc.substr(2, 2));
-            clrNumInItem    = posNumInString(presentColour, crntClrSqnc);
-            yCoord          = clrNumInItem % 2 * (mainCube->getHeight() - elemArry[i]->getHeight());
+            presentColour = firstNonDot(crntClrSqnc.substr(2, 2));
+            clrNumInItem = posNumInString(presentColour, crntClrSqnc);
+            yCoord = clrNumInItem % 2 * (mainCube->getHeight() - elemArry[i]->getHeight());
             elemArry[i]->setYCoord(yCoord);
-            presentColour   = firstNonDot(crntClrSqnc.substr(4, 2));
-            clrNumInItem    = posNumInString(presentColour, crntClrSqnc);
-            zCoord          = clrNumInItem % 2 * (mainCube->getWidth() - elemArry[i]->getWidth());
+            presentColour = firstNonDot(crntClrSqnc.substr(4, 2));
+            clrNumInItem = posNumInString(presentColour, crntClrSqnc);
+            zCoord = clrNumInItem % 2 * (mainCube->getWidth() - elemArry[i]->getWidth());
             elemArry[i]->setZCoord(zCoord);
             elemArry[i]->setFlagInPlace(true);
             if (xCoord == 0 && yCoord == 0 && zCoord == 0)
@@ -360,7 +361,7 @@ int main()
             if (crntClrSqnc[2] != '.')
                 if (crntClrSqnc[4] != '.')
                 {
-                    xDmnsns[xAmnt] = elemArry[i]->getDepth();                 
+                    xDmnsns[xAmnt] = elemArry[i]->getDepth();
                     //elemArry[i]->setXCoord(crntX);
                     //elemArry[i]->setYCoord(0);
                     //elemArry[i]->setZCoord(0);
@@ -386,7 +387,7 @@ int main()
                     //elemArry[i]->setYCoord(0);
                     //elemArry[i]->setZCoord(crntZ);
                     //crntZ += zDmnsns[zAmnt];
-                    zAmnt++;                    
+                    zAmnt++;
                 }
 
 
@@ -401,29 +402,29 @@ int main()
 
             for (j = 0; j < 4; j++)
             {
+                if (clrPstnNumInMain == clrNumInItem) break;
                 elemArry[i]->rotateThree();
                 crntClrSqnc = elemArry[i]->getColorSqnc();
                 clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
-                if (clrPstnNumInMain == clrNumInItem) break;
             }
 
             for (j = 0; j < 4; j++)
             {
+                if (clrPstnNumInMain == clrNumInItem) break;
                 elemArry[i]->rotateTwo();
                 crntClrSqnc = elemArry[i]->getColorSqnc();
                 clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
-                if (clrPstnNumInMain == clrNumInItem) break;
             }
 
             for (j = 0; j < 4; j++)
             {
+                if (clrPstnNumInMain == clrNumInItem) break;
                 elemArry[i]->rotateOne();
                 crntClrSqnc = elemArry[i]->getColorSqnc();
                 clrNumInItem = posNumInString(frstPrsntClr, crntClrSqnc);
-                if (clrPstnNumInMain == clrNumInItem) break;
             }
 
-                    
+
         }
         else;
 
@@ -440,46 +441,46 @@ int main()
     xDmnsnTot = new int[xAmnt];
     yDmnsnTot = new int[yAmnt];
     zDmnsnTot = new int[zAmnt];
-    xDmnsnTot[0] = xStart;
-    yDmnsnTot[0] = yStart;
-    zDmnsnTot[0] = zStart;
+    xDmnsnTot[0] = xStart; if (xAmnt > 1)  xDmnsnTot[xAmnt - 1] = xEnd;
+    yDmnsnTot[0] = yStart; if (yAmnt > 1)  yDmnsnTot[yAmnt - 1] = yEnd;
+    zDmnsnTot[0] = zStart; if (zAmnt > 1)  zDmnsnTot[yAmnt - 1] = zEnd;
 
-    for (i = 1; i < xAmnt; i++)
+    for (i = 1; i < xAmnt-1; i++)
         xDmnsnTot[i] = xDmnsns[i - 1];
 
-    for (i = 1; i < yAmnt; i++)
+    for (i = 1; i < yAmnt-1; i++)
         yDmnsnTot[i] = yDmnsns[i - 1];
 
-    for (i = 1; i < zAmnt; i++)
+    for (i = 1; i < zAmnt-1; i++)
         zDmnsnTot[i] = zDmnsns[i - 1];
 
 
 
-// z ribs
+    // z ribs
     crntX = 0;
     crntY = 0;
     crntZ = zStart;
 
     for (i = 0; i < xAmntAdd; i++)
     {
-        crntY = 0;
+         crntY = 0;
         for (j = 0; j < yAmntAdd; j++)
         {
             crntZ = zStart;
-            for (k = 1; k < zAmnt-1; k++)
+            for (k = 1; k < zAmnt - 1; k++)
             {
                 for (n = 0; n < Nitems; n++)
                 {
                     if (!elemArry[n]->getFlgInPlace())
                     {
                         crntClrSqnc = elemArry[n]->getColorSqnc();
-                        if (countSmblInString('.', crntClrSqnc.substr(4, 2)) == 2 && crntClrSqnc.substr(0, 2)[i] == mainCubeClrSqnc.substr(0, 2)[i] && crntClrSqnc.substr(2, 2)[j] == mainCubeClrSqnc.substr(2, 2)[j] && elemArry[n]->getWidth()==zDmnsnTot[k])
+                        if (countSmblInString('.', crntClrSqnc.substr(4, 2)) == 2 && crntClrSqnc.substr(0, 2)[i] == mainCubeClrSqnc.substr(0, 2)[i] && crntClrSqnc.substr(2, 2)[j] == mainCubeClrSqnc.substr(2, 2)[j] && elemArry[n]->getWidth() == zDmnsnTot[k])
                         {
                             elemArry[n]->setXCoord(crntX);
                             elemArry[n]->setYCoord(crntY);
                             elemArry[n]->setZCoord(crntZ);
                             elemArry[n]->setFlagInPlace(true);
-                            break; 
+                            break;
                         }
 
                     }
@@ -585,7 +586,7 @@ int main()
     for (i = 0; i < xAmntAdd; i++)
     {
         crntY = yStart;
-        for (j = 1; j < yAmnt-1; j++)
+        for (j = 1; j < yAmnt - 1; j++)
         {
             crntZ = zStart;
             for (k = 1; k < zAmnt - 1; k++)
@@ -595,9 +596,9 @@ int main()
                     if (!elemArry[n]->getFlgInPlace())
                     {
                         crntClrSqnc = elemArry[n]->getColorSqnc();
-                        if (crntClrSqnc.substr(0, 2)[i] == mainCubeClrSqnc.substr(0, 2)[i] )
+                        if (crntClrSqnc.substr(0, 2)[i] == mainCubeClrSqnc.substr(0, 2)[i])
                         {
-                            if (elemArry[n]->getHeight() == yDmnsnTot[j]&& elemArry[n]->getWidth()==zDmnsnTot[k]) 
+                            if (elemArry[n]->getHeight() == yDmnsnTot[j] && elemArry[n]->getWidth() == zDmnsnTot[k])
                             {
                                 elemArry[n]->setXCoord(crntX);
                                 elemArry[n]->setYCoord(crntY);
@@ -614,9 +615,6 @@ int main()
                                 elemArry[n]->setFlagInPlace(true);
                                 break;
                             }
-                            
-
-                            
                         }
 
                     }
@@ -624,6 +622,7 @@ int main()
                         continue;
 
                 }
+
                 crntZ += zDmnsnTot[k];
             }
             crntY += yDmnsnTot[j];
@@ -638,7 +637,7 @@ int main()
     crntY = 0;
     crntZ = zStart;
 
-    for (i = 1; i < xAmnt-1; i++)
+    for (i = 1; i < xAmnt - 1; i++)
     {
         crntY = 0;
         for (j = 0; j < yAmntAdd; j++)
@@ -796,8 +795,8 @@ int main()
                                 while (elemArry[n]->getDepth() != xDmnsnTot[i])
                                     elemArry[n]->rotateThree();
                             }
-                                
-                            
+
+
 
                             elemArry[n]->setXCoord(crntX);
                             elemArry[n]->setYCoord(crntY);
@@ -817,9 +816,9 @@ int main()
 
 
     //for (i = Nitems-1; i >= 0; i--)
-    for(i=0; i< Nitems; i++)
-        cout << i << ". " << elemArry[i]->getOrientation()[0] << " " << elemArry[i]->getOrientation()[2] << " " << elemArry[i]->getXCoord() << " " << elemArry[i]->getYCoord() << " " << elemArry[i]->getZCoord() << " " <<  elemArry[i]->getDepth() << " " << elemArry[i]->getHeight() << " " << elemArry[i]->getWidth() << " " << elemArry[i]->getColorSqnc() << endl;
-//i << ". " <<
+    for (i = 0; i< Nitems; i++)
+        cout << i << ". " << elemArry[i]->getOrientation()[0] << " " << elemArry[i]->getOrientation()[2] << " " << elemArry[i]->getXCoord() << " " << elemArry[i]->getYCoord() << " " << elemArry[i]->getZCoord() << " " << elemArry[i]->getDepth() << " " << elemArry[i]->getHeight() << " " << elemArry[i]->getWidth() << " " << elemArry[i]->getColorSqnc() << endl;
+    //i << ". " <<
     /*cin.clear();
     cin.ignore(32767, '\n');
     cin.get();*/
@@ -835,20 +834,20 @@ void cube::setColorSqnc(string inClrSqnc)
 void cube::initCube(string intStr)
 {
     int i;
-    int spaces[3], indx=0;
-    for(i=0;i<intStr.length();i++)
+    int spaces[3], indx = 0;
+    for (i = 0; i<intStr.length(); i++)
     {
-        if (intStr[i]==' ')
+        if (intStr[i] == ' ')
         {
-            spaces[indx]=i;
+            spaces[indx] = i;
             indx++;
         }
     }
-    depth       = stoi(intStr.substr(0,spaces[0]));
-    height      = stoi(intStr.substr(spaces[0]+1,spaces[1]-spaces[0]-1));
-    width       = stoi(intStr.substr(spaces[1]+1,spaces[2]-spaces[1]-1));
-    colorSqnc   = intStr.substr(spaces[2]+1,6);
-    
+    depth = stoi(intStr.substr(0, spaces[0]));
+    height = stoi(intStr.substr(spaces[0] + 1, spaces[1] - spaces[0] - 1));
+    width = stoi(intStr.substr(spaces[1] + 1, spaces[2] - spaces[1] - 1));
+    colorSqnc = intStr.substr(spaces[2] + 1, 6);
+
 }
 
 
@@ -1436,7 +1435,7 @@ void fillElems(particle **elemArry, int Nelems)
     elemArry[47]->setDepth(330);
     elemArry[47]->setHeight(20);
     elemArry[47]->setWidth(110);
-    
+
     elemArry[48] = new particle;
     elemArry[48]->setColorSqnc("..Y.B.");
     elemArry[48]->setDepth(100);
@@ -1550,4 +1549,85 @@ void shuffleElems(particle **elemArry, int Nelems)
         for (j = 0; j < rand() % 4; j++)
             elemArry[i]->rotateThree();
     }
+}
+
+void shufflePosElems(particle **orgArry, int Nitems)
+{
+    int i, n, *randArry, randNum, filledAmnt{0};
+    bool absent;
+    randArry = new int[Nitems];
+    particle **auxArry;
+    auxArry = new particle*[Nitems];
+    for (i = 0; i < Nitems; i++)
+    {
+        auxArry[i] = new particle;
+        auxArry[i] = orgArry[i];
+        absent = false;
+        while (!absent)
+        {
+            absent = true;
+            randNum = rand() % (Nitems);
+            for (n = 0; n < i; n++)
+            {
+                if (randArry[n] == randNum)
+                {
+                    absent = false;
+                    break;
+                }
+            }
+        }
+        randArry[i] = randNum;
+        cout << randArry[i] << endl;
+
+    }
+    for (i = 0; i < Nitems; i++)
+    {
+        orgArry[i] = auxArry[randArry[i]];
+    }
+
+    
+//    auxArry
+}
+
+void ribsPlacing(particle ** elemArry, int Nitems, string mainCubeClrSqnc, int *xDmnsnTot, int xAmnt, int xStepSize)//               int *ribDmnsns, int ribAmnt, int ribStrtPosInClrSqc, int nonRib1End, int nonRib1Amnt, int nonRib1StrtPosInClrSqc, int nonRib2End, int nonRib2Amnt, int nonRib2StrtPosInClrSqc)
+{
+
+    crntX = ;
+    crntY = 0;
+    crntZ = zStart;
+
+    for (i = 0; i < xAmntAdd; i++)
+    {
+        crntY = 0;
+        for (j = 0; j < yAmntAdd; j++)
+        {
+            crntZ = zStart;
+            for (k = 1; k < zAmnt - 1; k++)
+            {
+                for (n = 0; n < Nitems; n++)
+                {
+                    if (!elemArry[n]->getFlgInPlace())
+                    {
+                        crntClrSqnc = elemArry[n]->getColorSqnc();
+                        if (countSmblInString('.', crntClrSqnc.substr(4, 2)) == 2 && crntClrSqnc.substr(0, 2)[i] == mainCubeClrSqnc.substr(0, 2)[i] && crntClrSqnc.substr(2, 2)[j] == mainCubeClrSqnc.substr(2, 2)[j] && elemArry[n]->getWidth() == zDmnsnTot[k])
+                        {
+                            elemArry[n]->setXCoord(crntX);
+                            elemArry[n]->setYCoord(crntY);
+                            elemArry[n]->setZCoord(crntZ);
+                            elemArry[n]->setFlagInPlace(true);
+                            break;
+                        }
+
+                    }
+                    else
+                        continue;
+
+                }
+                crntZ += zDmnsnTot[k];
+            }
+            crntY += yEnd;
+        }
+        crntX += xEnd;
+    }
+
 }
