@@ -79,7 +79,7 @@ void shuffleElems(particle**, int);
 
 void shufflePosElems(particle**, int);
 
-//int *ribsPlacing(particle** elemArry, int Nitems, int *ribDmnsns, int rinAmnt, int nonRib1End, int nonRib1Amnt, int nonRib2End, int nonRib2Amnt);
+void ribsPlacing(particle**, int, string, char , int* , int , int , int , int , int* , int, int , int , int , int* , int, int, int, int);
 
 
 int main()
@@ -104,6 +104,11 @@ int main()
     elemArry[i] = new particle;
     elemArry[i]->initCube(inpStr);
     }*/
+    
+    /*int AA=7; int BB = 1; int CC {14}, res;
+    res = 8/AA;
+    cout << res << endl;*/
+    
 
 
 
@@ -134,8 +139,8 @@ int main()
     }*/
 
     fillElems(elemArry, Nitems);
-    shuffleElems(elemArry, Nitems);
-    shufflePosElems(elemArry, Nitems);
+    //shuffleElems(elemArry, Nitems);
+    //shufflePosElems(elemArry, Nitems);
     
     mainCube->setColorSqnc("ROYGBV");
     mainCube->setDepth(1100);
@@ -457,7 +462,9 @@ int main()
 
 
     // z ribs
-    crntX = 0;
+    
+    ribsPlacing(elemArry, Nitems, mainCubeClrSqnc, 'z', xDmnsnTot, xAmnt, xAmnt-1, 0, 0, yDmnsnTot, yAmnt, yAmnt-1, 0, 0, zDmnsnTot, zAmnt, 1, 1, zStart);
+    /*crntX = 0;
     crntY = 0;
     crntZ = zStart;
 
@@ -493,7 +500,7 @@ int main()
             crntY += yEnd;
         }
         crntX += xEnd;
-    }
+    }*/
 
 
     //y ribs
@@ -1577,7 +1584,7 @@ void shufflePosElems(particle **orgArry, int Nitems)
             }
         }
         randArry[i] = randNum;
-        cout << randArry[i] << endl;
+        //cout << randArry[i] << endl;
 
     }
     for (i = 0; i < Nitems; i++)
@@ -1589,20 +1596,21 @@ void shufflePosElems(particle **orgArry, int Nitems)
 //    auxArry
 }
 
-void ribsPlacing(particle ** elemArry, int Nitems, string mainCubeClrSqnc, char ribAxis, int *xDmnsnTot, int xAmnt, int xStepSize, int initXIndx)//               int *ribDmnsns, int ribAmnt, int ribStrtPosInClrSqc, int nonRib1End, int nonRib1Amnt, int nonRib1StrtPosInClrSqc, int nonRib2End, int nonRib2Amnt, int nonRib2StrtPosInClrSqc)
+void ribsPlacing(particle ** elemArry, int Nitems, string mainCubeClrSqnc, char ribAxis, int *xDmnsnTot, int xAmnt, int xStepSize, int initXIndx, int xStart, int *yDmnsnTot, int yAmnt, int yStepSize, int initYIndx, int yStart, int *zDmnsnTot, int zAmnt, int zStepSize, int initZIndx, int zStart)
 {
     bool suitCheck;
-    crntX = ;
-    crntY = 0;
-    crntZ = zStart;
+    int crntX {xStart}, crntY, crntZ;
+    int i, j, k, n;
+    string crntClrSqnc;
+    
 
-    for (i = initXIndx; i < xAmntAdd; i+=xStepSize)
+    for (i = initXIndx; i < xAmnt; i+=xStepSize)
     {
-        crntY = 0;
-        for (j = 0; j < yAmntAdd; j++)
+        crntY = yStart;
+        for (j = initYIndx; j < yAmnt; j+=yStepSize)
         {
             crntZ = zStart;
-            for (k = 1; k < zAmnt - 1; k++)
+            for (k = initZIndx; k < zAmnt; k+=zStepSize)
             {
                 for (n = 0; n < Nitems; n++)
                 {
@@ -1612,13 +1620,13 @@ void ribsPlacing(particle ** elemArry, int Nitems, string mainCubeClrSqnc, char 
                         switch (ribAxis)
                         {
                         case 'z':
-                            suitCheck = countSmblInString('.', crntClrSqnc.substr(4, 2)) == 2 && crntClrSqnc.substr(0, 2)[i] == mainCubeClrSqnc.substr(0, 2)[i] && crntClrSqnc.substr(2, 2)[j] == mainCubeClrSqnc.substr(2, 2)[j] && elemArry[n]->getWidth() == zDmnsnTot[k];
+                            suitCheck = countSmblInString('.', crntClrSqnc.substr(4, 2)) == 2 && crntClrSqnc.substr(0, 2)[(i+1)/xAmnt] == mainCubeClrSqnc.substr(0, 2)[(i+1)/xAmnt] && crntClrSqnc.substr(2, 2)[(j+1)/yAmnt] == mainCubeClrSqnc.substr(2, 2)[(j+1)/yAmnt] && elemArry[n]->getWidth() == zDmnsnTot[k];
                             break;
                         case 'y':
-                            suitCheck = countSmblInString('.', crntClrSqnc.substr(2, 2)) == 2 && crntClrSqnc.substr(0, 2)[i] == mainCubeClrSqnc.substr(0, 2)[i] && crntClrSqnc.substr(4, 2)[k] == mainCubeClrSqnc.substr(4, 2)[k] && elemArry[n]->getHeight() == yDmnsnTot[j];
+                            suitCheck = countSmblInString('.', crntClrSqnc.substr(2, 2)) == 2 && crntClrSqnc.substr(0, 2)[(i+1)/xAmnt] == mainCubeClrSqnc.substr(0, 2)[(i+1)/xAmnt] && crntClrSqnc.substr(4, 2)[(k+1)/zAmnt] == mainCubeClrSqnc.substr(4, 2)[(k+1)/zAmnt] && elemArry[n]->getHeight() == yDmnsnTot[j];
                             break;
                         case 'x':
-                            suitCheck = countSmblInString('.', crntClrSqnc.substr(0, 2)) == 2 && crntClrSqnc.substr(2, 2)[j] == mainCubeClrSqnc.substr(2, 2)[j] && crntClrSqnc.substr(4, 2)[k] == mainCubeClrSqnc.substr(4, 2)[k] && elemArry[n]->getDepth() == xDmnsnTot[i];
+                            suitCheck = countSmblInString('.', crntClrSqnc.substr(0, 2)) == 2 && crntClrSqnc.substr(2, 2)[(j+1)/yAmnt] == mainCubeClrSqnc.substr(2, 2)[(j+1)/yAmnt] && crntClrSqnc.substr(4, 2)[(k+1)/zAmnt] == mainCubeClrSqnc.substr(4, 2)[(k+1)/zAmnt] && elemArry[n]->getDepth() == xDmnsnTot[i];
                             break;                         
                         default:
                             break;
@@ -1639,9 +1647,9 @@ void ribsPlacing(particle ** elemArry, int Nitems, string mainCubeClrSqnc, char 
                 }
                 crntZ += zDmnsnTot[k];
             }
-            crntY += yEnd;
+            crntY += yDmnsnTot[j];
         }
-        crntX += xEnd;
+        crntX += xDmnsnTot[i];
     }
 
 }
