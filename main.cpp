@@ -126,7 +126,7 @@ int main()
     int crntX{ 0 }, crntY{ 0 }, crntZ{ 0 };
     xArryCrd[0] = 0; yArryCrd[0] = 0; zArryCrd[0] = 0;
     int xCrdAmnt{ 1 }, yCrdAmnt{ 1 }, zCrdAmnt{ 1 };
-    
+
 
     /*n = Nitems-1;
     for (i = 0; i < Nitems; i++)
@@ -388,10 +388,9 @@ int main()
                 if (crntClrSqnc[0] != '.')
                 {
                     yDmnsns[yAmnt] = elemArry[i]->getHeight();
-                    //elemArry[i]->setXCoord(0); 
-                    //elemArry[i]->setYCoord(crntY);
-                    //elemArry[i]->setZCoord(0);
-                    //crntY += yDmnsns[yAmnt];
+                    crntY += elemArry[i]->getHeight();
+                    yArryCrd[yCrdAmnt] = crntY;
+                    yCrdAmnt++;
                     yAmnt++;
                 }
 
@@ -399,10 +398,9 @@ int main()
                 if (crntClrSqnc[2] != '.')
                 {
                     zDmnsns[zAmnt] = elemArry[i]->getWidth();
-                    //elemArry[i]->setXCoord(0);
-                    //elemArry[i]->setYCoord(0);
-                    //elemArry[i]->setZCoord(crntZ);
-                    //crntZ += zDmnsns[zAmnt];
+                    crntZ += elemArry[i]->getWidth();
+                    zArryCrd[zCrdAmnt] = crntZ;
+                    zCrdAmnt++;
                     zAmnt++;
                 }
 
@@ -837,9 +835,9 @@ int main()
     for (i = 0; i< Nitems; i++)
         cout << i << ". " << elemArry[i]->getOrientation()[0] << " " << elemArry[i]->getOrientation()[2] << " " << elemArry[i]->getXCoord() << " " << elemArry[i]->getYCoord() << " " << elemArry[i]->getZCoord() << " " << elemArry[i]->getDepth() << " " << elemArry[i]->getHeight() << " " << elemArry[i]->getWidth() << " " << elemArry[i]->getColorSqnc() << endl;
     //i << ". " <<
-    /*cin.clear();
+    cin.clear();
     cin.ignore(32767, '\n');
-    cin.get();*/
+    cin.get();
     return 0;
 }
 
