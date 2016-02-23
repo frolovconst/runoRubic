@@ -82,13 +82,17 @@ void shufflePosElems(particle**, int);
 
 void ribsPlacing(particle ** elemArry, int Nitems, string mainCubeClrSqnc, char ribAxis, int *xDmnsnTot, int xAmnt, int xStepSize, int initXIndx, int *yDmnsnTot, int yAmnt, int yStepSize, int initYIndx, int *zDmnsnTot, int zAmnt, int zStepSize, int initZIndx);
 
+void setCoords(particle *, int xCoord, int yCoord, int zCoord);
+
+//void platesPlacing(particle ** elemArry, int Nitems, string mainCubeClrSqnc, char ribAxis, int *xDmnsnTot, int xAmnt, int xStepSize, int initXIndx, int *yDmnsnTot, int yAmnt, int yStepSize, int initYIndx, int *zDmnsnTot, int zAmnt, int zStepSize, int initZIndx);
+
 int main()
 {
 
     int i, j, k, n;
     cube *mainCube;
     string inpStr, number;
-    int Nitems{ 64 };
+    int Nitems{ 2 };
     particle **elemArry, **elemArry_j;
     //getline(cin, inpStr);
     //getline(cin, number);// >> Nitems;
@@ -118,7 +122,7 @@ int main()
 
 
 
-    elemArry_j = new particle*[Nitems];
+    //elemArry_j = new particle*[Nitems];
 
     int xAmnt = 0, yAmnt = 0, zAmnt = 0, xStart{ 0 }, xEnd, yStart{ 0 }, yEnd, zStart{ 0 }, zEnd, xCoord, yCoord, zCoord;
     int xDmnsns[998], yDmnsns[998], zDmnsns[998], xArryCrd[1000], yArryCrd[1000], zArryCrd[1000];
@@ -141,17 +145,17 @@ int main()
 
     }*/
 
-    fillElems(elemArry, Nitems);
+    //fillElems(elemArry, Nitems);
     //shuffleElems(elemArry, Nitems);
     //shufflePosElems(elemArry, Nitems);
 
-    mainCube->setColorSqnc("ROYGBV");
+    /*mainCube->setColorSqnc("ROYGBV");
     mainCube->setDepth(1100);
     mainCube->setHeight(200);
-    mainCube->setWidth(500);
+    mainCube->setWidth(500);*/
 
 
-    /*mainCube->setColorSqnc("ROYGBV");
+    mainCube->setColorSqnc("ROYGBV");
     mainCube->setDepth(2);
     mainCube->setHeight(2);
     mainCube->setWidth(2);
@@ -166,7 +170,7 @@ int main()
     elemArry[0]->setColorSqnc("YGVBO.");
     elemArry[0]->setDepth(2);
     elemArry[0]->setHeight(2);
-    elemArry[0]->setWidth(1);*/
+    elemArry[0]->setWidth(1);
 
 
 
@@ -262,16 +266,14 @@ int main()
             presentColour = firstNonDot(crntClrSqnc.substr(0, 2));
             clrNumInItem = posNumInString(presentColour, crntClrSqnc);
             xCoord = clrNumInItem % 2 * (mainCube->getDepth() - elemArry[i]->getDepth());
-            elemArry[i]->setXCoord(xCoord);
             presentColour = firstNonDot(crntClrSqnc.substr(2, 2));
             clrNumInItem = posNumInString(presentColour, crntClrSqnc);
             yCoord = clrNumInItem % 2 * (mainCube->getHeight() - elemArry[i]->getHeight());
-            elemArry[i]->setYCoord(yCoord);
             presentColour = firstNonDot(crntClrSqnc.substr(4, 2));
             clrNumInItem = posNumInString(presentColour, crntClrSqnc);
             zCoord = clrNumInItem % 2 * (mainCube->getWidth() - elemArry[i]->getWidth());
-            elemArry[i]->setZCoord(zCoord);
-            elemArry[i]->setFlagInPlace(true);
+            setCoords(elemArry[i], xCoord, yCoord, zCoord);
+
             if (xCoord == 0 && yCoord == 0 && zCoord == 0)
             {
                 xStart = elemArry[i]->getDepth();
@@ -1546,3 +1548,59 @@ void ribsPlacing(particle ** elemArry, int Nitems, string mainCubeClrSqnc, char 
     }
 
 }
+
+void setCoords(particle *element, int xCoord, int yCoord, int zCoord)
+{
+    element->setXCoord(xCoord);
+    element->setYCoord(yCoord);
+    element->setZCoord(zCoord);
+    element->setFlagInPlace(true);
+}
+
+/*void platesPlacing(particle ** elemArry, int Nitems, string mainCubeClrSqnc, char platePlane, int * xDmnsnTot, int xAmnt, int xStepSize, int initXIndx, int * yDmnsnTot, int yAmnt, int yStepSize, int initYIndx, int * zDmnsnTot, int zAmnt, int zStepSize, int initZIndx)
+{
+    int i, j, k, n;
+    bool sui
+
+    for (i = initXIndx; i < xAmntAdd; i++)
+    {
+        for (j = 1; j < yAmnt - 1; j++)
+        {
+            for (k = 1; k < zAmnt - 1; k++)
+            {
+                for (n = 0; n < Nitems; n++)
+                {
+                    if (!elemArry[n]->getFlgInPlace())
+                    {
+                        crntClrSqnc = elemArry[n]->getColorSqnc();
+                        if (crntClrSqnc.substr(0, 2)[i] == mainCubeClrSqnc.substr(0, 2)[i])
+                        {
+                            if (elemArry[n]->getHeight() == yDmnsnTot[j] && elemArry[n]->getWidth() == zDmnsnTot[k])
+                            {
+                                elemArry[n]->setXCoord(crntX);
+                                elemArry[n]->setYCoord(crntY);
+                                elemArry[n]->setZCoord(crntZ);
+                                elemArry[n]->setFlagInPlace(true);
+                                break;
+                            }
+                            else if (elemArry[n]->getWidth() == yDmnsnTot[j] && elemArry[n]->getHeight() == zDmnsnTot[k])
+                            {
+                                elemArry[n]->rotateTwo();
+                                elemArry[n]->setXCoord(crntX);
+                                elemArry[n]->setYCoord(crntY);
+                                elemArry[n]->setZCoord(crntZ);
+                                elemArry[n]->setFlagInPlace(true);
+                                break;
+                            }
+                        }
+
+                    }
+                    else
+                        continue;
+
+                }
+
+            }
+        }
+    }
+}*/
